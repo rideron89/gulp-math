@@ -19,3 +19,21 @@ gulp.task('generate', function() {
         .pipe(gulp.dest(''));
 });
 ```
+
+## Example
+
+An HTML file with the following markup:
+
+```html
+<div>
+    <p>There are gulpcalc(10 * 2 - 5) meese in the lodge.</p>
+</div>
+```
+
+Will output the following markup:
+
+```html
+<div>
+    <p>There are 15 meese in the lodge.</p>
+</div>
+```
