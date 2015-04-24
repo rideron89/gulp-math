@@ -20,6 +20,12 @@ gulp.task('generate', function() {
 });
 ```
 
+Now, use `gulpcalc()` in your code:
+
+```html
+gulpcalc(10 * 2 - 5 / 3)
+```
+
 ## Example
 
 An HTML file with the following markup:
