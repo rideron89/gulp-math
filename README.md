@@ -1,4 +1,4 @@
-#gulp-math [![NPM version][npm-image]][npm-url]
+#gulp-math
 > Evaluate math expressions with gulp
 
 ## Usage
