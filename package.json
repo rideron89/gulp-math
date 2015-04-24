@@ -1,0 +1,30 @@
+{
+    "name": "gulp-math",
+    "version": "0.1.0",
+    "description": "Evaluate math expressions with gulp",
+    "dependencies": {
+        "gulp-util": "~3.0.4",
+        "mathjs": "~1.6.0",
+        "through2": "~0.6.3"
+    },
+    "devDependencies": {
+    },
+    "scripts": {
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/rideron89/gulp-math.git"
+    },
+    "keywords": [
+        "gulpplugin",
+        "math"
+    ],
+    "author": "Ron Rider <rideron89@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/rideron89/gulp-math/issues"
+    },
+    "engines": {
+        "node": ">=0.10"
+    }
+}
