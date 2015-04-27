@@ -26,7 +26,7 @@ var mathPlugin = function(vars) {
             return cb(new PluginError('gulp-math', 'Streaming is not supported (I guess)'));
         }
 
-        var matched_result = String(file.contents).replace(/gulpcalc\((.+)\);/g, function(match, p1, offset, string) {
+        var matched_result = String(file.contents).replace(/gulpcalc\(([^;]+)\);/g, function(match, p1, offset, string) {
             try {
                 return math.round(parser.eval(p1), 3);
             } catch(err) {
