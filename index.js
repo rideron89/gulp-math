@@ -30,7 +30,6 @@ var mathPlugin = function(vars) {
             try {
                 return math.round(parser.eval(p1), 3);
             } catch(err) {
-                gutil.log(match);
                 // this isn't the most accurate way of getting the line number...
                 err.lineNumber = string.slice(0, offset).match(/\n/g).length + 1;
                 err.message = err.message + ' at line ' + err.lineNumber + '\n       ' + p1;
