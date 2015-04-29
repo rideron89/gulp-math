@@ -8,12 +8,14 @@
 First, install `gulp-math` as a development dependency:
 
 ```shell
-npm install --save-dev gulp-math
+npm install gulp-math
 ```
 
 Then, add it to your `gulpfile.js`:
 
 ```javascript
+var math = require('gulp-math');
+
 gulp.task('generate', function() {
     return gulp.src('pre.html')
         .pipe(rename('post.html'))
@@ -30,7 +32,7 @@ gulpmath(10 * 2 - 5 / 3);
 
 ## Options
 
-gulp-math accepts a list of variables to be used in the calculations.
+`gulp-math` accepts a list of variables to be used in the calculations.
 
 ### math([vars])
 
