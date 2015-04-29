@@ -5,7 +5,7 @@ var gutil = require('gulp-util'),
     PluginError = gutil.PluginError;
 var math = require('mathjs');
 
-var mathPlugin = function(vars) {
+exports = module.exports = function(vars) {
     var parser = math.parser();
 
     // if the plugin receives an array of variables, evaluate them
@@ -50,5 +50,3 @@ var mathPlugin = function(vars) {
         cb();
     });
 };
-
-module.exports = mathPlugin;
