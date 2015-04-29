@@ -26,18 +26,24 @@ var mathPlugin = function(vars) {
             return cb(new PluginError('gulp-math', 'Streaming is not supported (I guess)'));
         }
 
-        var matched_result = String(file.contents).replace(/gulpcalc\(([^;]+)\);/g, function(match, p1, offset, string) {
-            try {
-                return math.round(parser.eval(p1), 3);
-            } catch(err) {
-                // this isn't the most accurate way of getting the line number...
-                err.lineNumber = string.slice(0, offset).match(/\n/g).length + 1;
-                err.message = err.message + ' at line ' + err.lineNumber + '\n       ' + p1;
-                throw new PluginError('gulp-math', err.message);
-            }
-        });
+        if (file.isBuffer()) {
+            var matched_result = String(file.contents).replace(/gulpcalc\(([^;]+)\);/g, function(match, p1, offset, string) {
+                try {
+                    return math.round(parser.eval(p1), 3);
+                } catch(err) {
+                    if (string.slice(0, offset).match(/\n/g)) {
+                        // this isn't the most accurate way of getting the line number...
+                        err.lineNumber = string.slice(0, offset).match(/\n/g).length + 1;
+                    } else {
+                        err.lineNumber = 0;
+                    }
+                    err.message = err.message + ' at line ' + err.lineNumber + '\n       ' + p1;
+                    throw new PluginError('gulp-math', err.message);
+                }
+            });
 
-        file.contents = new Buffer(String(matched_result));
+            file.contents = new Buffer(String(matched_result));
+        }
 
         this.push(file);
 
