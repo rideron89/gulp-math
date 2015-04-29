@@ -22,10 +22,10 @@ gulp.task('generate', function() {
 });
 ```
 
-Now, use `gulpcalc();` in your code:
+Now, use `gulpmath();` in your code:
 
 ```html
-gulpcalc(10 * 2 - 5 / 3);
+gulpmath(10 * 2 - 5 / 3);
 ```
 
 ## Options
@@ -49,8 +49,8 @@ An HTML file with the following markup:
 
 ```html
 <div>
-    gulpcalc(abc = 5);
-    <p>There are gulpcalc(10 * 2 - abc); meese in the lodge.</p>
+    gulpmath(abc = 5);
+    <p>There are gulpmath(10 * 2 - abc); meese in the lodge.</p>
 </div>
 ```
 

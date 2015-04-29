@@ -1,4 +1,4 @@
-gulpcalc(a + 5);
+gulpmath(a + 5);
 asdf
 asdf
-gulpcalc(b + 5);
+gulpmath(b + 5);

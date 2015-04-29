@@ -23,11 +23,11 @@ var mathPlugin = function(vars) {
         }
 
         if (file.isStream()) {
-            return cb(new PluginError('gulp-math', 'Streaming is not supported (I guess)'));
+            return cb(new PluginError('gulp-math', 'Streaming is not supported'));
         }
 
         if (file.isBuffer()) {
-            var matched_result = String(file.contents).replace(/gulpcalc\(([^;]+)\);/g, function(match, p1, offset, string) {
+            var matched_result = String(file.contents).replace(/gulpmath\(([^;]+)\);/g, function(match, p1, offset, string) {
                 try {
                     return math.round(parser.eval(p1), 3);
                 } catch(err) {
