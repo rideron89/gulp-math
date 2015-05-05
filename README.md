@@ -1,4 +1,4 @@
-#gulp-math
+# gulp-math
 > Evaluate math expressions with gulp
 
 `gulp-math` makes use of the `Math.js` library for Javascript and Node.js. Their [documentation](http://mathjs.org/) can be used to form the math expressions used by `gulp-math`.
@@ -19,7 +19,10 @@ var math = require('gulp-math');
 gulp.task('generate', function() {
     return gulp.src('pre.html')
         .pipe(rename('post.html'))
-        .pipe(math())
+        .pipe(math({columns: 12, column_padding: 20, max_content_width: 660}).on('error', function(err) {
+            console.log(err.toString());
+            this.emit('end');
+        }))
         .pipe(gulp.dest(''));
 });
 ```
@@ -62,4 +65,20 @@ Will output the following:
 <div>
     <p>There are 15 meese in the lodge.</p>
 </div>
+```
+
+## Known Issues
+
+Currently, not all MathJS expressions are able to be evaluated.
+
+Here is a list of those expressions that are incompatible with `gulp-math`:
+
+```javascript
+gulpmath(9 / 3 + 2i); // anything with a semi-colon does not get picked up by this plugin
+```
+
+Unit conversions work, but the results cannot be rounded:
+
+```javascript
+gulpmath(5.08 cm to inch); // on Windows, this produces 2.0000000000000004 inch
 ```
