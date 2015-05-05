@@ -4,6 +4,33 @@ var assert = require('assert'),
     math = require('../');
 
 describe('gulp-math', function() {
+    it('should pass file when it isNull()', function(done) {
+        var file = {
+            isNull: function() { return true; }
+        };
+
+        var myMath = math();
+        myMath.write(file);
+
+        myMath.once('data', function(newFile) {
+            assert.equal(newFile, file);
+        });
+
+        done();
+    });
+
+    it('should emit error when file isStream()', function(done) {
+        var file = {
+            isNull: function() { return false; },
+            isStream: function() { return true; }
+        };
+
+        var myMath = math();
+        assert.throws(function() { myMath.write(file); });
+
+        done();
+    });
+
     describe('buffer mode', function() {
         it ('should perform expression with no calculations and no variables set', function(done) {
             var file = new File({
@@ -112,6 +139,22 @@ describe('gulp-math', function() {
             myMath.once('data', function(newFile) {
                 assert(newFile.isBuffer());
                 assert.equal(newFile.contents.toString('utf8'), fs.readFileSync('test/expected/testmath.txt', 'utf8'));
+            });
+
+            done();
+        });
+
+        it('should perform list of expressions taken from MathJS site', function(done) {
+            var file = new File({
+                contents: fs.readFileSync('test/fixtures/mathjs_examples.txt')
+            });
+
+            var myMath = math();
+            myMath.write(file);
+
+            myMath.once('data', function(newFile) {
+                assert(newFile.isBuffer());
+                assert.equal(newFile.contents.toString('utf8'), fs.readFileSync('test/expected/mathjs_examples.txt', 'utf8'));
             });
 
             done();

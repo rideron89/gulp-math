@@ -1,0 +1,4 @@
+gulpmath(1.2 * (2 + 4.5));
+gulpmath(2 foot to foot);
+gulpmath(sin(45 deg) ^ 2);
+gulpmath(9 / 3 + 2i);
