@@ -17,7 +17,7 @@ function isInt(n) {
  * Checks if a number is a float.
  */
 function isFloat(n) {
-    return (n == Number(n) && n % 1 !== 0);
+    return (Number(n) == n && n % 1 !== 0);
 }
 
 exports = module.exports = function(vars) {
@@ -40,14 +40,15 @@ exports = module.exports = function(vars) {
         }
 
         if (file.isStream()) {
-            _this.emit('error', new PluginError('gulp-math', 'Streaming is not supported'))
+            _this.emit('error', new PluginError('gulp-math', 'Streaming is not supported'));
             return cb();
         }
 
         if (file.isBuffer()) {
-            var matched_result = String(file.contents).replace(/gulpmath\(([^;]+)\);/g, function(match, p1, offset, string) {
+            var matched_result = String(file.contents).replace(/gulpmath\((([^;]|\\;)+)\);/g, function(match, p1, offset, string) {
                 try {
-                    var evaluated_result = parser.eval(p1);
+                    p1 = p1.replace(/\\;/g, ';'); // allows escaped semi-colons
+                    var evaluated_result = parser.eval(String(p1));
 
                     if (isInt(evaluated_result) || isFloat(evaluated_result)) {
                         return math.round(parser.eval(p1), 3);

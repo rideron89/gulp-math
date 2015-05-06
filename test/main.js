@@ -144,6 +144,22 @@ describe('gulp-math', function() {
             done();
         });
 
+        it('should perform one expression with escaped semicolon and no variables set', function(done) {
+            var file = new File({
+                contents: new Buffer('gulpmath(5\\;20);')
+            });
+
+            var myMath = math({});
+            myMath.write(file);
+
+            myMath.once('data', function(newFile) {
+                assert(newFile.isBuffer());
+                assert.equal(newFile.contents.toString('utf8'), '[20]');
+            });
+
+            done();
+        });
+
         it('should perform list of expressions taken from MathJS site', function(done) {
             var file = new File({
                 contents: fs.readFileSync('test/fixtures/mathjs_examples.txt')
