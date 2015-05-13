@@ -1,6 +1,6 @@
 {
   "name": "gulp-math",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Evaluate math expressions with gulp",
   "dependencies": {
     "gulp-util": "~3.0.4",
