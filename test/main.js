@@ -175,5 +175,119 @@ describe('gulp-math', function() {
 
             done();
         });
+
+        describe('API Options', function() {
+            it('should perform expression with empty options given', function(done) {
+                var file = new File({
+                    contents: new Buffer('gulpmath(5.5555555555555555);')
+                });
+
+                var myMath = math({}, {});
+                myMath.write(file);
+
+                myMath.once('data', function(newFile) {
+                    assert(newFile.isBuffer());
+                    assert.equal(newFile.contents.toString('utf8'), '5.556');
+                });
+
+                done();
+            });
+
+            it('should perform expression with invalid option given', function(done) {
+                var file = new File({
+                    contents: new Buffer('gulpmath(5.5555555555555555);')
+                });
+
+                var myMath = math({}, {this_is_invalid: 12345, this_is_also_invalid: 'hi'});
+                myMath.write(file);
+
+                myMath.once('data', function(newFile) {
+                    assert(newFile.isBuffer());
+                    assert.equal(newFile.contents.toString('utf8'), '5.556');
+                });
+
+                done();
+            });
+
+            it('should perform expression with valid int eval_precision option given', function(done) {
+                var file = new File({
+                    contents: new Buffer('gulpmath(5.5555555555555555);')
+                });
+
+                var myMath = math({}, {eval_precision: 2});
+                myMath.write(file);
+
+                myMath.once('data', function(newFile) {
+                    assert(newFile.isBuffer());
+                    assert.equal(newFile.contents.toString('utf8'), '5.56');
+                });
+
+                done();
+            });
+
+            it('should perform expression with valid string eval_precision option given', function(done) {
+                var file = new File({
+                    contents: new Buffer('gulpmath(5.5555555555555555);')
+                });
+
+                var myMath = math({}, {eval_precision: '4'});
+                myMath.write(file);
+
+                myMath.once('data', function(newFile) {
+                    assert(newFile.isBuffer());
+                    assert.equal(newFile.contents.toString('utf8'), '5.5556');
+                });
+
+                done();
+            });
+
+            it('should perform expression with invalid eval_precision option given', function(done) {
+                var file = new File({
+                    contents: new Buffer('gulpmath(5.5555555555555555);')
+                });
+
+                var myMath = math({}, {eval_precision: '4.5'});
+                myMath.write(file);
+
+                myMath.once('data', function(newFile) {
+                    assert(newFile.isBuffer());
+                    assert.equal(newFile.contents.toString('utf8'), '5.556');
+                });
+
+                done();
+            });
+
+            it('should perform expression with a bignumber and bignumber precision set', function(done) {
+                var file = new File({
+                    contents: new Buffer('gulpmath(0.12345 + 0.000006789);')
+                });
+
+                var myMath = math({}, {number: 'bignumber', precision: 7});
+                myMath.write(file);
+
+                myMath.once('data', function(newFile) {
+                    assert(newFile.isBuffer());
+                    assert.equal(newFile.contents.toString('utf8'), '0.1234568');
+                });
+
+                done();
+            });
+
+            it('should perform expression with a bignumber and bignumer precision set too high', function(done) {
+                var file = new File({
+                    contents: new Buffer('gulpmath(0.12345 + 0.000006789);')
+                });
+
+                var myMath = math({}, {number: 'bignumber', precision: 3});
+                myMath.write(file);
+
+                myMath.once('data', function(newFile) {
+                    assert(newFile.isBuffer());
+                    assert.equal(newFile.contents.toString('utf8'), '0.123');
+                });
+
+                done();
+            });
+        });
     });
 });

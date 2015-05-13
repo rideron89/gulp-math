@@ -20,14 +20,48 @@ function isFloat(n) {
     return (Number(n) == n && n % 1 !== 0);
 }
 
-exports = module.exports = function(vars) {
-    var parser = math.parser();
+function setupOptions(opts, defaults) {
+    opts = opts || {};
+
+    // set up default options
+    for (var index in defaults) {
+        if (defaults.hasOwnProperty(index) && opts.hasOwnProperty(index) === false) {
+            opts[index] = defaults[index];
+        }
+    }
+
+    if (isInt(opts.eval_precision) === false) {
+        opts.eval_precision = defaults.eval_precision;
+    }
+
+    if (opts.number.toLowerCase() === 'number') {
+        opts.precision = opts.eval_precision;
+    }
+
+    opts.eval_precision = parseInt(opts.eval_precision);
+
+    return opts;
+}
+
+exports = module.exports = function(vars, opts) {
+    var defaults = {
+        epsilon: 1e-14,
+        eval_precision: 3,
+        matrix: 'matrix',
+        number: 'number',
+        precision: 64
+    };
+    var parser = null;
+
+    opts = setupOptions(opts, defaults);
+
+    parser = math.create(opts).parser();
 
     // if the plugin receives an array of variables, evaluate them
     if (vars !== undefined) {
         for (var index in vars) {
             if (vars.hasOwnProperty(index)) {
-                parser.eval(index + ' = ' + vars[index]);
+                parser.set(index, vars[index]);
             }
         }
     }
@@ -50,8 +84,9 @@ exports = module.exports = function(vars) {
                     p1 = p1.replace(/\\;/g, ';'); // allows escaped semi-colons
                     var evaluated_result = parser.eval(String(p1));
 
-                    if (isInt(evaluated_result) || isFloat(evaluated_result)) {
-                        return math.round(parser.eval(p1), 3);
+                    // we have to manually round to precision with 'number' results
+                    if (opts.number === 'number' && (isInt(evaluated_result) || isFloat(evaluated_result))) {
+                        return math.round(evaluated_result, opts.eval_precision);
                     }
 
                     return evaluated_result;
@@ -65,7 +100,7 @@ exports = module.exports = function(vars) {
                         err.fileName = file.path.substr(file.path.lastIndexOf(path.sep) + 1);
                     }
 
-                    if (string.slice(0, offset).match(/\n/g)) {
+                    if (string && string.slice(0, offset).match(/\n/g)) {
                         err.lineNumber = string.slice(0, offset).match(/\n/g).length + 1;
                     }
 
